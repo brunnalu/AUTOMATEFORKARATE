@@ -1,40 +1,40 @@
 pipeline {
     agent any
     tools {
-        maven 'mvnd'  // Usando mvnd ao invés de Maven tradicional
-        jdk 'Java-11' // Certifique-se de que o JDK 11 está configurado corretamente no Jenkins
+        maven 'mvnd'   // Certifique-se de configurar a ferramenta Maven chamada "mvnd" no Jenkins
+        jdk 'Java-11'  // Certifique-se de que o JDK 11 esteja definido corretamente
     }
     parameters {
         string(name: 'ENV', defaultValue: 'qa', description: 'Ambiente do Karate')
-        string(name: 'KARATE_TAGS', defaultValue: '@regression', description: 'Ayude a selecionar cenários')
+        string(name: 'KARATE_TAGS', defaultValue: '@regression', description: 'Use para selecionar cenários')
     }
     triggers {
-        cron('H 2 * * *')  // Executar o pipeline às 2h todos os dias
+        cron('H 2 * * *')  // Executa às 2h diariamente
     }
     options {
         timestamps()
-        timeout(time: 45, unit: 'MINUTES')  // Timeout após 45 minutos
-        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '30'))  // Manter os 20 últimos builds e os 30 últimos dias de logs
+        timeout(time: 45, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '30'))
     }
     stages {
         stage('Checkout & Test') {
             steps {
                 checkout scm
                 sh """
-                    mvnd clean test \  // Usando mvnd em vez de mvn
-                        -Dkarate.env=${params.ENV} \  // Passando o ambiente para o Karate
-                        -Dkarate.options="--tags ${params.KARATE_TAGS}"  // Usando tags configuradas
+                    mvnd clean test \\
+                      -Dkarate.env=${params.ENV} \\
+                      -Dkarate.options="--tags ${params.KARATE_TAGS}"
                 """
             }
         }
     }
     post {
         always {
-            junit 'target/surefire-reports/*.xml'  // Gerar relatórios de testes
+            junit 'target/surefire-reports/*.xml'
             cucumber buildStatus: 'UNSTABLE',
                      fileIncludePattern: '**/*.json',
                      jsonReportDirectory: 'target',
-                     trendsLimit: 20  // Gerar relatórios de Cucumber
+                     trendsLimit: 20
         }
         success {
             echo 'Pipeline finalizada com sucesso.'
