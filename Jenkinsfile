@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'mvnd'   // Certifique-se de configurar a ferramenta Maven chamada "mvnd" no Jenkins
-        jdk 'Java-17'  // Certifique-se de que o JDK 11 esteja definido corretamente
+        jdk 'Java-21'  // Certifique-se de que o JDK 11 esteja definido corretamente
     }
     parameters {
         string(name: 'ENV', defaultValue: 'qa', description: 'Ambiente do Karate')
