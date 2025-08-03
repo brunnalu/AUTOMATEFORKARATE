@@ -2,8 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'mvnd'   // Certifique-se de configurar a ferramenta Maven chamada "mvnd" no Jenkins
-       jdk 'jdk21'
-  // Certifique-se de que o JDK 11 esteja definido corretamente
+        jdk 'jdk21'    // Certifique-se de que o JDK 21 esteja definido corretamente no Jenkins
     }
     parameters {
         string(name: 'ENV', defaultValue: 'qa', description: 'Ambiente do Karate')
@@ -21,9 +20,9 @@ pipeline {
         stage('Checkout & Test') {
             steps {
                 checkout scm
-                sh """
-                    mvnd clean test \\
-                      -Dkarate.env=${params.ENV} \\
+                bat """
+                    mvnd clean test ^
+                      -Dkarate.env=${params.ENV} ^
                       -Dkarate.options="--tags ${params.KARATE_TAGS}"
                 """
             }
