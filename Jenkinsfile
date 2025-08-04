@@ -1,8 +1,8 @@
 pipeline {
   agent any
   tools {
-    maven 'Maven- 3.9.11'
-    jdk 'Java-21'
+    maven 'Maven-3.8.8'
+    jdk 'Java-11'
   }
   parameters {
     string(name: 'ENV',       defaultValue: 'qa', description: 'Ambiente do Karate')
