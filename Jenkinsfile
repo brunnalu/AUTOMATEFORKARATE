@@ -43,5 +43,17 @@ pipeline {
     failure {
       echo 'Erro grave no build, verifique o console.'
     }
+    post {
+    always {
+        publishHTML (target: [
+            reportDir: 'target/karate-reports',
+            reportFiles: 'karate-summary.html',
+            reportName: 'Relatório Karate',
+            keepAll: true,
+            alwaysLinkToLastBuild: true
+        ])
+    }
+}
+
   }
 }
