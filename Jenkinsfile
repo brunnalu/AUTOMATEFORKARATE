@@ -20,10 +20,8 @@ pipeline {
     stage('Checkout & Test') {
       steps {
         checkout scm
-        sh """
-          mvn clean test \
-            -Dkarate.env=${params.ENV} \
-            -Dkarate.options="--tags ${params.KARATE_TAGS}"
+        bat """
+          mvn clean test -Dkarate.env=${params.ENV} -Dkarate.options="--tags ${params.KARATE_TAGS}"
         """
       }
     }
