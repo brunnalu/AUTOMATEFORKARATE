@@ -1,3 +1,4 @@
+@regression
 Feature: Testes da API Todo
 
   Scenario: Criar um novo todo (POST)
